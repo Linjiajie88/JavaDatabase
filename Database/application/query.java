@@ -32,11 +32,11 @@ public class query {
 	        // Do something with the Connection
 	        stmt = conn.createStatement();
 	        rs = stmt.executeQuery("SHOW Databases;");
-	        stmt.executeQuery("USE University;");
+	        stmt.executeQuery("USE NBA;");
 	        //numRowsModified = stmt.executeUpdate("insert into Student VALUES(70000, 'Amelia', 'Finance', 1);");
 			//System.out.println(numRowsModified + " rows inserted.");
 
-	        rs = stmt.executeQuery("SELECT * FROM Student;");
+	        rs = stmt.executeQuery("SELECT PlayerName,Age,G,GS FROM nbanew where Playername = 'James Harden';");
 	        //rs = stmt.executeQuery("SHOW Databases;");
 
 			System.out.println("Students\n ID\tName\tdept_name\tcred_hours");
