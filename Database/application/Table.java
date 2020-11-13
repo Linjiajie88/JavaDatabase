@@ -32,31 +32,17 @@ public class Table {
 	private HashMap<String, Scene> sceneMap;
 	private Stage primaryStage;
 	private TableView<Player> table;
+	private TableView<Team>table2;
+	private String Target;
+	private String SearchType;
 	
 	public Table(HashMap<String, Scene> sceneMap, Stage primaryStage) {
 		this.sceneMap = sceneMap;
 		this.primaryStage = primaryStage;
 	}
 	
-	public Scene createScene() {
-		//TableView table = new TableView();
-		table = new TableView<Player>();
-		ObservableList<Player> data =
-		        FXCollections.observableArrayList(
-		            new Player("Jacob", "Smith", "jacob.smith@example.com"),
-		            new Player("Isabella", "Johnson", "isabella.johnson@example.com"),
-		            new Player("Ethan", "Williams", "ethan.williams@example.com"),
-		            new Player("Emma", "Jones", "emma.jones@example.com"),
-		            new Player("Michael", "Brown", "michael.brown@example.com")
-		        );
-		table.setItems(data);
-		TableColumn firstNameCol = new TableColumn("First Name");
-		firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        TableColumn age = new TableColumn("Age");
-        TableColumn emailCol = new TableColumn("Email");
-        
-     
+	public Scene createScene(String target, String searchType) {
+		
         
 		Connection conn = null;
 	    Statement stmt = null;
@@ -66,6 +52,11 @@ public class Table {
 	    String password;
 	    String connectionString = "jdbc:mysql://localhost:3306?" +
 	                                       "user=root&password=";
+	    
+	    ObservableList<Player> data =
+		        FXCollections.observableArrayList();
+	    ObservableList<Team> data2 =
+		        FXCollections.observableArrayList();
 
 	    try {
 			//System.out.print("Enter password: ");
@@ -79,42 +70,107 @@ public class Table {
 
 	        // Do something with the Connection
 	        stmt = conn.createStatement();
-	        //rs = stmt.executeQuery("SHOW Databases;");
 	        stmt.executeQuery("USE NBA;");
-	        //numRowsModified = stmt.executeUpdate("insert into Student VALUES(70000, 'Amelia', 'Finance', 1);");
-			//System.out.println(numRowsModified + " rows inserted.");
-
-	        rs = stmt.executeQuery("SELECT PlayerName,Age,G,GS FROM nbanew where Playername = 'James Harden';");
-	        //rs = stmt.executeQuery("SHOW Databases;");
-
-			System.out.println("Students\n ID\tName\tdept_name\tcred_hours");
-			
-	        while(rs.next())
-	        {
-	        	System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
+	       
+	        //calling function 
+	        if(searchType == "Player"){
+	        	System.out.print("here");
+	        	cStmt = conn.prepareCall("{call SearchForPlayer(?)}");
+	        	cStmt.setString(1,target);
+	        	boolean hadResults = cStmt.execute();
+		        
+				//
+				// Process all returned result sets
+				//
+				while (hadResults) {
+					System.out.println ("\nProcessing result set");
+					rs = cStmt.getResultSet();
+		        	// process result set
+					while(rs.next())
+					{
+						data.addAll(FXCollections.observableArrayList(new Player(rs.getString(1),rs.getInt(2),rs.getInt(3),rs.getInt(4))));
+						System.out.println(rs.getString(1) + ": " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
+					}
+					hadResults = cStmt.getMoreResults();
+				}
+				table = new TableView<Player>();
+				table.setItems(data);
+				TableColumn NameCol = new TableColumn("Name");
+				NameCol.setCellValueFactory(new PropertyValueFactory<>("PlayerName"));
+				
+		        TableColumn YearCol = new TableColumn("Year");
+		        YearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+		        TableColumn age = new TableColumn("Age");
+		        age.setCellValueFactory(new PropertyValueFactory<>("age"));
+		        TableColumn PtsCol = new TableColumn("PTS");
+		        PtsCol.setCellValueFactory(new PropertyValueFactory<>("point"));
+				
+		        table.getColumns().addAll(NameCol, YearCol,age,PtsCol);
+		        Group startpage = new Group();
+		        startpage.getChildren().addAll(table);
+		        scene = new Scene(startpage);
+				
 	        }
+	        else {
+	        	cStmt = conn.prepareCall("{call SearchForTeam(?)}");
+	        	cStmt.setString(1,target);
+	        	boolean hadResults = cStmt.execute();
+		        
+				//
+				// Process all returned result sets
+				//
+				while (hadResults) {
+					System.out.println ("\nProcessing result set");
+					rs = cStmt.getResultSet();
+		        	// process result set
+					while(rs.next())
+					{
+						data2.addAll(new Team(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getString(4)));
+						System.out.println(rs.getString(1) + ": " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
+					}
+					hadResults = cStmt.getMoreResults();
+				}
+				table2 = new TableView<Team>();
+				table2.setItems(data2);
+				TableColumn NameCol = new TableColumn("Team");
+				NameCol.setCellValueFactory(new PropertyValueFactory<>("TeamName"));
+				TableColumn pname = new TableColumn("PlayerName");
+		        pname.setCellValueFactory(new PropertyValueFactory<>("PlayerName"));
+		        TableColumn YearCol = new TableColumn("Year");
+		        YearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+		        
+		        TableColumn salaryCol = new TableColumn("Salary");
+		        salaryCol.setCellValueFactory(new PropertyValueFactory<>("Salary"));
+				
+		        //table2.autosize();
+		        table2.setPrefSize(400, 500);
+		        //table2.setMaxHeight(500);
+		        table2.getColumns().addAll(NameCol,pname,YearCol,salaryCol);
+		        Group startpage = new Group();
+		        startpage.getChildren().addAll(table2);
+		        scene = new Scene(startpage);
+				//return scene;
+	        }
+	       
+	        
+
+			
 	    
 
 		
 		
 
 
-    } catch (SQLException ex) {
+    } 
+	    catch (SQLException ex) {
         // handle any errors
         System.out.println("SQLException: " + ex.getMessage());
         System.out.println("SQLState: " + ex.getSQLState());
         System.out.println("VendorError: " + ex.getErrorCode());
-    }
-	    
-	    
-		
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol,age);
-        
-		
-		Group startpage = new Group();
-        startpage.getChildren().addAll(table);
-        Scene StartScene = new Scene(startpage);
-		return StartScene;
+	    }
+	    return scene;
 	}
+	    
+	
 
 }

@@ -34,9 +34,7 @@ public class WelcomeUI {
 	public Scene createWelcomScene() {
 		
 	 
-	    //creat TableUI
-		Table table = new Table(sceneMap, primaryStage);
-    	sceneMap.put("table", table.createScene());
+	    
     	
     	Image pic = new Image("bg.jpg");
         ImageView b = new ImageView(pic);
@@ -46,7 +44,7 @@ public class WelcomeUI {
         b.setImage(pic);
         
 		//create buttons
-        enter = new Button("test");
+        enter = new Button("Search");
         enter.setPrefWidth(90);
         
         
@@ -80,6 +78,9 @@ public class WelcomeUI {
         	Target = textField.getText();
             System.out.println(Target);
             System.out.println(SearchType);
+          //creat TableUI
+    		Table table = new Table(sceneMap, primaryStage);
+        	sceneMap.put("table", table.createScene(Target,SearchType));
         	//this.query=new query();
         	//query.test();
         	primaryStage.setScene(sceneMap.get("table"));

@@ -1,37 +1,41 @@
 package application;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Player {
-    private final SimpleStringProperty firstName;
-    private final SimpleStringProperty lastName;
-    private final SimpleStringProperty email;
+    private final SimpleStringProperty PlayerName;
+    private final int year;
+    private final int age;
+    private final int point;
+    
  
-    Player(String fName, String lName, String email) {
-        this.firstName = new SimpleStringProperty(fName);
-        this.lastName = new SimpleStringProperty(lName);
-        this.email = new SimpleStringProperty(email);
+    Player(String fName, int Year, int Age,int pts) {
+        this.PlayerName = new SimpleStringProperty(fName);
+        this.year = Year;
+        this.age = Age;
+        this.point = pts;
     }
  
-    public String getFirstName() {
-        return firstName.get();
+    public String getPlayerName() {
+        return PlayerName.get();
     }
     public void setFirstName(String fName) {
-        firstName.set(fName);
+        PlayerName.set(fName);
     }
         
-    public String getLastName() {
-        return lastName.get();
-    }
-    public void setLastName(String fName) {
-        lastName.set(fName);
-    }
-    
-    public String getEmail() {
-        return email.get();
-    }
-    public void setEmail(String fName) {
-        email.set(fName);
-    }
+ 
+
+	public int getPoint() {
+		return point;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public int getAge() {
+		return age;
+	}
         
 }
