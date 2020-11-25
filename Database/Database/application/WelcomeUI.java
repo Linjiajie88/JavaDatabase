@@ -72,8 +72,7 @@ public class WelcomeUI {
     	   SearchType="Team";
        });
         
-        //LoginUI loginUI = new LoginUI(sceneMap, primaryStage);
-    	//sceneMap.put("login", loginUI.createLoginScene());
+
         
         enter.setOnAction(e->{
         	Target = textField.getText();
@@ -97,9 +96,12 @@ public class WelcomeUI {
             else {
             	System.out.println("here2");
             	Table table = new Table(sceneMap, primaryStage);
+            	//Chart mychart = new Chart(sceneMap,primaryStage);
+            	//sceneMap.put("chart", mychart.createScene());
             	sceneMap.put("table", table.createScene(Target,SearchType));
             	//this.query=new query();
             	//query.test();
+            	//primaryStage.setScene(sceneMap.get("chart"));
             	primaryStage.setScene(sceneMap.get("table"));
             }
         
