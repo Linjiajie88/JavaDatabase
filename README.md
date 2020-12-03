@@ -1,2 +1,3 @@
 # JavaDatabase
 The application was using JAVA(in Eclipse) and MYsql,there two sql files will be need for the MYSQL use.One of the called NBA_DATA is for data import, and i will also upload the csv files as well.The second one is called NBA_FUNCTION which is the file contain all the function/ procedure that we are using in the project.
+For the Application launch, you can import the project directly. You may need to change the build path of the application or setting up your own, since we have the different path to run those java files. Also, in Table.java file you may need to change the password for connecting to the database.
