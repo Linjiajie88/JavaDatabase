@@ -4,38 +4,43 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Team {
-    private final SimpleStringProperty PlayerName;
+    private final int orb;
     private final int year;
     private final SimpleStringProperty TeamName;
-    private final SimpleStringProperty Salary;
+    private final int pts;
     
  
-    Team(String TName,String PName, int Year, String salary) {
+    Team(String TName, int Year,int Obr, int Pts) {
     	this.TeamName = new SimpleStringProperty(TName);
-        this.PlayerName = new SimpleStringProperty(PName);
+        this.orb = Obr;
         this.year = Year;
-        this.Salary = new SimpleStringProperty(salary);
+        this.pts = Pts;
         
         
     }
  
-    public String getPlayerName() {
-        return PlayerName.get();
-    }
-    public void setFirstName(String fName) {
-        PlayerName.set(fName);
-    }
+  
 
 	public String getTeamName() {
 		return TeamName.get();
 	}
 
-	public String getSalary() {
-		return Salary.get();
-	}
+
 
 	public int getYear() {
 		return year;
+	}
+
+
+
+	public int getPts() {
+		return pts;
+	}
+
+
+
+	public int getOrb() {
+		return orb;
 	}
 
 }

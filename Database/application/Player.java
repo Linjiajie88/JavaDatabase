@@ -6,14 +6,14 @@ import javafx.beans.property.SimpleStringProperty;
 public class Player {
     private final SimpleStringProperty PlayerName;
     private final int year;
-    private final int age;
+    private final int orb;
     private final int point;
     
  
     Player(String fName, int Year, int Age,int pts) {
         this.PlayerName = new SimpleStringProperty(fName);
         this.year = Year;
-        this.age = Age;
+        this.orb = Age;
         this.point = pts;
     }
  
@@ -34,8 +34,9 @@ public class Player {
 		return year;
 	}
 
-	public int getAge() {
-		return age;
+	public int getOrb() {
+		return orb;
 	}
-        
+
+
 }

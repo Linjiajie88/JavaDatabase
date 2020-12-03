@@ -21,6 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Chart {
@@ -57,15 +58,23 @@ public class Chart {
         	series.getData().add(new XYChart.Data(list1.get(i),list2.get(i)));
         	series2.getData().add(new XYChart.Data(list1.get(i),list3.get(i)));
         }
+        Button backbtn  = new Button("Back");
+        
+        backbtn.setOnAction(e->{
+        	primaryStage.setScene(sceneMap.get("table"));
+        });
+       
         
         Scene scene  = new Scene(lineChart,800,600);
         lineChart.getData().addAll(series,series2);
         lineChart.setPrefSize(800, 600);
+        
+        VBox box = new VBox(lineChart,backbtn);
 
         //create pane
-        Group startpage = new Group(lineChart);
+        Group startpage = new Group(box);
         startpage.getChildren().addAll();
-        Scene StartScene = new Scene(startpage,800,600);
+        Scene StartScene = new Scene(startpage);
 		return StartScene;
 	}
 }

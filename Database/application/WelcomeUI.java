@@ -14,6 +14,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -25,7 +26,7 @@ public class WelcomeUI {
 	private Stage primaryStage;
 	private query query;
 	private String Target;
-	private String SearchType;
+	private String SearchType="blank";
 	public static String type;
 	public WelcomeUI(HashMap<String, Scene> sceneMap, Stage primaryStage) {
 		this.sceneMap = sceneMap;
@@ -71,40 +72,41 @@ public class WelcomeUI {
     	   SearchType="Team";
        });
         
-        //LoginUI loginUI = new LoginUI(sceneMap, primaryStage);
-    	//sceneMap.put("login", loginUI.createLoginScene());
+
         
         enter.setOnAction(e->{
         	Target = textField.getText();
             System.out.println(Target);
             System.out.println(SearchType);
-          //creat TableUI
-    		Table table = new Table(sceneMap, primaryStage);
-        	sceneMap.put("table", table.createScene(Target,SearchType));
-        	//this.query=new query();
-        	//query.test();
-        	primaryStage.setScene(sceneMap.get("table"));
-        	
-        });
-        /*
-        host.setOnAction(e->{
-        	type = "host";
-        	primaryStage.setScene(sceneMap.get("login"));
-        });
-        manager.setOnAction(e->{
-        	type = "manager";
-        	primaryStage.setScene(sceneMap.get("login"));
-        });
+            if(SearchType.equals("blank")) {
+            	System.out.println("here");
+            	Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Please Select a Search Type!");
+                alert.showAndWait();
+            }
+            else if(Target.equals("Enter the Name here")|| Target.isEmpty()) {
+            	Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Please Enter a Name!");
+                alert.showAndWait();
+            }
+            else {
+            	System.out.println("here2");
+            	Table table = new Table(sceneMap, primaryStage);
+            	//Chart mychart = new Chart(sceneMap,primaryStage);
+            	//sceneMap.put("chart", mychart.createScene());
+            	sceneMap.put("table", table.createScene(Target,SearchType));
+            	//this.query=new query();
+            	//query.test();
+            	//primaryStage.setScene(sceneMap.get("chart"));
+            	primaryStage.setScene(sceneMap.get("table"));
+            }
         
-        //image
-        
-        Image pic = new Image("welcome.png");
-        ImageView b = new ImageView(pic);
-        b.setFitHeight(500);
-        b.setFitWidth(500);
-        b.setPreserveRatio(true);
-        b.setImage(pic);
-        */
+        });
+      
         //hboox
         HBox hBox = new HBox(10,textField,menu,enter);
         //postionBox.setLayoutX(200);
